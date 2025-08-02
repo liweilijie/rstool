@@ -1,21 +1,6 @@
+use std::{fmt, str::FromStr};
 use clap::Parser;
-use std::{fmt, path::Path, str::FromStr};
-
-#[derive(Debug, Parser)]
-#[command(name = "rstool", version, author, about, long_about = None)]
-pub struct Opts {
-    #[command(subcommand)]
-    pub cmd: SubCommand,
-}
-
-// rstool csv -i input.csv -o output.json -d ',' -h true
-#[derive(Debug, Parser)]
-pub enum SubCommand {
-    #[command(name = "csv", about = "Show csv, or convert csv to other formats")]
-    Csv(CsvOpts),
-    #[command(name = "genpass", about = "Generate a random password")]
-    GenPass(GenPassOpts),
-}
+use super::verify_input_file;
 
 /*
  *   当您在 match 语句中使用 format 时，Rust 需要能够复制这个值，因为：
@@ -45,28 +30,6 @@ pub struct CsvOpts {
     pub delimiter: char,
     #[arg(long, default_value_t = true)]
     pub header: bool,
-}
-
-#[derive(Debug, Parser)]
-pub struct GenPassOpts {
-    #[arg(short, long, default_value_t = 16)]
-    pub length: u8,
-    #[arg(long, default_value_t = true)]
-    pub uppercase: bool,
-    #[arg(long, default_value_t = true)]
-    pub lowercase: bool,
-    #[arg(long, default_value_t = true)]
-    pub numbers: bool,
-    #[arg(long, default_value_t = true)]
-    pub symbols: bool,
-}
-
-fn verify_input_file(filename: &str) -> Result<String, &'static str> {
-    if Path::new(filename).exists() {
-        Ok(filename.to_string())
-    } else {
-        Err("File does not exist")
-    }
 }
 
 fn parse_format(s: &str) -> Result<OutputFormat, anyhow::Error> {
