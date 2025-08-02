@@ -52,4 +52,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          body: ${{ steps.git-cliff.outputs.content }}
+          body: 'Release ${{ github.ref_name }}'
+          # body: ${{ steps.git-cliff.outputs.content }}
