@@ -1,8 +1,8 @@
+use crate::cli::OutputFormat;
 use anyhow::Result;
 use csv::Reader;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use crate::cli::OutputFormat;
 
 /// 球员数据结构体
 #[derive(Debug, Serialize, Deserialize)]
