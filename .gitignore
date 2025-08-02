@@ -1,1 +1,40 @@
-/target
+# === Rust 编译输出 ===
+/target/
+
+# === Cargo 相关 ===
+**/*.rs.bk
+Cargo.lock
+
+# 如果你是库项目，请保留 Cargo.lock（删除上面那行）
+
+# === 编辑器/IDE 相关 ===
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# IntelliJ / RustRover / CLion
+.idea/
+*.iml
+
+# === 日志 / 临时文件 ===
+*.log
+*.tmp
+*.swp
+*.bak
+
+# === OS 相关 ===
+.DS_Store
+Thumbs.db
+
+# === 测试覆盖率工具 ===
+/coverage/
+htmlcov/
+
+# === 本地环境变量或密钥 ===
+.env
+.env.*
+
+# === 生成的文档（可选）===
+/target/doc/
+*.json
