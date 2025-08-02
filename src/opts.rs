@@ -81,6 +81,9 @@ impl FromStr for OutputFormat {
 
 impl fmt::Display for OutputFormat {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self)
+        match self {
+            OutputFormat::Json => write!(f, "json"),
+            OutputFormat::Yaml => write!(f, "yaml"),
+        }
     }
 }
