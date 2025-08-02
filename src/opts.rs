@@ -1,5 +1,5 @@
+use clap::Parser;
 use std::{fmt, path::Path, str::FromStr};
-use clap::{Parser};
 
 #[derive(Debug, Parser)]
 #[command(name = "rstool", version, author, about, long_about = None)]

@@ -1,8 +1,8 @@
-use std::fs;
-use anyhow::Result;
-use serde::{Serialize, Deserialize};
-use csv::Reader;
 use crate::opts::OutputFormat;
+use anyhow::Result;
+use csv::Reader;
+use serde::{Deserialize, Serialize};
+use std::fs;
 
 /// 球员数据结构体
 #[derive(Debug, Serialize, Deserialize)]
@@ -18,7 +18,7 @@ struct Player {
 }
 
 /// 将CSV文件转换为指定格式
-/// 
+///
 /// 关于迭代器操作的详细说明，请参考：docs/iterator_operations.md
 pub fn process_csv(input: &str, output: &str, format: OutputFormat) -> Result<()> {
     let mut reader = Reader::from_path(input)?;
@@ -28,7 +28,9 @@ pub fn process_csv(input: &str, output: &str, format: OutputFormat) -> Result<()
     for result in reader.records() {
         let record = result?;
         // 详细的迭代器操作说明请参考：docs/iterator_operations.md
-        let json_value: serde_json::Value = headers.iter().zip(record.iter())
+        let json_value: serde_json::Value = headers
+            .iter()
+            .zip(record.iter())
             .map(|(k, v)| (k.to_string(), serde_json::Value::String(v.to_string())))
             .collect();
         ret.push(json_value);

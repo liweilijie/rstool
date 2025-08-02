@@ -1,7 +1,6 @@
+use rand::prelude::*;
 use rand::seq::SliceRandom;
 use zxcvbn::zxcvbn;
-use rand::prelude::*;
-
 
 const UPPER: &[u8] = b"ABCDEFGHJKLMNPQRSTUVWXYZ";
 const LOWER: &[u8] = b"abcdefghijkmnopqrstuvwxyz";
