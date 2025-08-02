@@ -20,7 +20,7 @@ struct Player {
 /// 将CSV文件转换为指定格式
 ///
 /// 关于迭代器操作的详细说明，请参考：docs/iterator_operations.md
-pub fn process_csv(input: &str, output: &str, format: OutputFormat) -> Result<()> {
+pub fn process_csv(input: &str, output: String, format: OutputFormat) -> Result<()> {
     let mut reader = Reader::from_path(input)?;
     let mut ret = Vec::with_capacity(128);
 

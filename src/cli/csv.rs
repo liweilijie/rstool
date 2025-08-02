@@ -1,4 +1,4 @@
-use super::verify_input_file;
+use super::verify_file;
 use clap::Parser;
 use std::{fmt, str::FromStr};
 
@@ -20,10 +20,10 @@ pub enum OutputFormat {
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
-    #[arg(short, long, value_parser = verify_input_file)]
+    #[arg(short, long, value_parser = verify_file)]
     pub input: String,
-    #[arg(short, long, default_value = "output.json")] // "output.json".into()
-    pub output: String,
+    #[arg(short, long)]
+    pub output: Option<String>,
     #[arg(long, value_parser = parse_format, default_value = "json")]
     pub format: OutputFormat,
     #[arg(short, long, default_value_t = ',')]
