@@ -4,6 +4,52 @@
 
 本文档详细解释了 `process_csv` 函数中 `json_value` 是如何通过迭代器操作进行 `collect` 的，特别是 `zip()`、`map()` 和 `collect()` 的使用。
 
+## 重要概念：为什么需要 `clone()`
+
+### 问题背景
+
+在代码中，我们使用了：
+```rust
+let headers = reader.headers()?.clone();
+```
+
+### 为什么需要 `clone()`？
+
+#### 1. **所有权问题**
+```rust
+// 错误示例：没有 clone()
+let headers = reader.headers()?;  // headers 是 &StringRecord
+for result in reader.records() {  // 这里会借用 reader
+    let record = result?;
+    // 错误！headers 和 reader 同时被借用
+    let json_value = headers.iter().zip(record.iter())...
+}
+```
+
+#### 2. **生命周期问题**
+- `reader.headers()` 返回的是对 `reader` 内部数据的引用
+- 当我们调用 `reader.records()` 时，`reader` 被可变借用
+- 这会导致 `headers` 引用失效
+
+#### 3. **解决方案：使用 `clone()`**
+```rust
+// 正确示例：使用 clone()
+let headers = reader.headers()?.clone();  // 创建独立的数据副本
+for result in reader.records() {
+    let record = result?;
+    // 现在可以安全使用 headers，因为它拥有独立的所有权
+    let json_value = headers.iter().zip(record.iter())...
+}
+```
+
+### 内存开销 vs 安全性
+
+| 方案 | 内存开销 | 安全性 | 推荐度 |
+|------|----------|--------|--------|
+| 不使用 `clone()` | 低 | ❌ 编译错误 | ❌ |
+| 使用 `clone()` | 中等 | ✅ 安全 | ✅ |
+| 重构逻辑 | 低 | ✅ 安全 | ✅ 但复杂 |
+
 ## 代码分析
 
 ### 核心代码片段
@@ -161,6 +207,7 @@ trait Iterator {
 - [Rust 迭代器文档](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [Rust 编程语言 - 迭代器](https://doc.rust-lang.org/book/ch13-02-iterators.html)
 - [serde_json 文档](https://docs.rs/serde_json/)
+- [csv crate 文档](https://docs.rs/csv/)
 
 ---
 
